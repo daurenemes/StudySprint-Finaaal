@@ -1,0 +1,5 @@
+*.pdf -text
+*.docx -text
+*.png -text
+*.sh text eol=lf
+*.bat text eol=crlf

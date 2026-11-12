@@ -1,0 +1,24 @@
+Test ID,Input / action,Expected,Actual,Status
+T01,Start without existing data file,"Two plans; three tasks; file saved","Two plans; three tasks; file saved",PASS
+T02,Create plan and task then reload,"New records exist on reload","Both records reloaded",PASS
+T03,Edit plan title and task minutes,"Updated values are read back","Updated values read back",PASS
+T04,Compare urgent long task to short low priority task,"Priority chooses urgent; Shortest chooses short","Both strategy orders matched",PASS
+T05,Subscribe and unsubscribe Observer,"One notice while subscribed and no further updates","Exactly one notice",PASS
+T06,Toggle completion; select optional report sections,"Progress changes; focus section omitted","Progress updated; optional focus omitted",PASS
+T07,Record then edit then delete focus session,"Minutes updated then session removed","40 min updated; deleted session absent",PASS
+T08,Export to TXT and CSV,"Both outputs contain expected text and headers","Both files validated",PASS
+T09,Create plan with blank title,"Input rejected with IllegalArgumentException","Rejected",PASS
+T10,Create task with zero minutes,"Input rejected with IllegalArgumentException","Rejected",PASS
+T11,Create task with priority six,"Input rejected with IllegalArgumentException","Rejected",PASS
+T12,Record focus for nonexistent task,"Input rejected with IllegalArgumentException","Rejected",PASS
+T13,Delete plan containing task and session,"Related tasks and sessions deleted","Cascade confirmed",PASS
+T14,Run 30 seconds then pause five minutes and try saving,30 active seconds remain and early save is rejected,No session saved before full minute,PASS
+T15,Complete a task and finish four distinct timers with duplicate save calls then reload,One bonus and four sessions with 110 XP at level 2,110 XP and level 2 persisted,PASS
+T16,Complete Monday then reopen and complete again Tuesday,Original date retained and timer extends streak only,Tuesday showed a two-day streak without a quest bonus,PASS
+T17,Edit timed session minutes and delete another timed entry,Changed entry becomes manual and deleted entry loses XP eligibility,Dashboard timed minutes returned to zero,PASS
+T18,Load the original seed file,Three tasks and original session load without assigned dates or timer history,20 undated XP and zero daily XP,PASS
+T19,Complete a task with a timed session then edit undo redo and reload,Undo rolls back the mission and redo restores the saved completion date,Completion and quest restored with the edited task fields intact,PASS
+T20,Import sample tasks and parse an exported report,Quoted titles and fields survive with one event and a saved batch,Three new unfinished tasks persisted and report tasks matched,PASS
+T21,Import a batch with invalid priority and parse a malformed date,No partial save and malformed row identified,No additions or events and the error pointed to line 2,PASS
+T22,Aggregate a workspace and then complete an unfinished task,Parent totals reflect child tasks and remaining time,Remaining estimate changed from 105 to 65 minutes,PASS
+T23,Pause an idle timer then reach zero and try to start again,Idle does not advance and finished is terminal,Countdown stayed at zero after restart and pause attempts,PASS

@@ -1,0 +1,145 @@
+@startuml
+!pragma layout smetana
+left to right direction
+skinparam classAttributeIconSize 0
+skinparam monochrome true
+hide empty members
+
+package "Model and Builder" {
+  class StudyPlan
+  class StudyTask
+  class "StudyTask.Builder" as TaskBuilder
+  class FocusSession
+  class Snapshot
+  class StudyProgress
+  StudyPlan "1" <-up- "0..*" StudyTask : planId
+  StudyTask "1" <-up- "0..*" FocusSession : taskId
+  TaskBuilder ..down.> StudyTask : builds
+  Snapshot o-up- StudyPlan
+  Snapshot o-- StudyTask
+  Snapshot o-up- FocusSession
+  StudyProgress ..down.> Snapshot
+}
+
+package "Facade and Storage" {
+  class StudyPlannerFacade
+  interface StudyRepository
+  class PropertiesRepository
+  StudyPlannerFacade --> StudyRepository
+  PropertiesRepository ..|> StudyRepository
+  StudyRepository ..> Snapshot
+}
+
+package "Strategy" {
+  interface SchedulingStrategy
+  class PriorityStrategy
+  class ShortestTaskStrategy
+  SchedulingStrategy <|.. PriorityStrategy
+  SchedulingStrategy <|.. ShortestTaskStrategy
+}
+
+package "Observer" {
+  class StudyEventHub
+  interface StudyEventListener
+  class StudyChangeEvent
+  StudyEventHub o-- StudyEventListener
+  StudyEventHub ..> StudyChangeEvent
+}
+
+package "Decorator" {
+  interface SummaryComponent
+  class BaseSummary
+  abstract SummaryDecorator
+  class ProgressSummaryDecorator
+  class FocusSummaryDecorator
+  SummaryComponent <|.. BaseSummary
+  SummaryComponent <|.. SummaryDecorator
+  SummaryDecorator <|-- ProgressSummaryDecorator
+  SummaryDecorator <|-- FocusSummaryDecorator
+  SummaryDecorator o--> SummaryComponent : wraps
+}
+
+package "Factory Method" {
+  abstract ExportService {
+    #createFormatter(): ReportFormatter
+  }
+  class TextExportService
+  class CsvExportService
+  interface ReportFormatter
+  ExportService <|-- TextExportService
+  ExportService <|-- CsvExportService
+  ExportService ..> ReportFormatter : creates
+}
+
+package "Adapter" {
+  interface TaskImportSource
+  class CsvTaskImportAdapter
+  class CsvTableReader
+  class TaskDraft
+  TaskImportSource <|.. CsvTaskImportAdapter
+  CsvTaskImportAdapter ..> CsvTableReader : reads rows
+  CsvTaskImportAdapter ..> TaskDraft : maps fields
+}
+
+package "Composite" {
+  interface WorkloadNode
+  class CourseMap
+  class Branch
+  class TaskNode
+  WorkloadNode <|.. Branch
+  WorkloadNode <|.. TaskNode
+  Branch *--> "0..*" WorkloadNode : children
+  CourseMap ..> Branch : builds
+  CourseMap ..> TaskNode : builds
+}
+
+package "Command" {
+  interface StudyCommand
+  class ToggleCompletionCommand
+  class CommandHistory
+  StudyCommand <|.. ToggleCompletionCommand
+  CommandHistory o--> StudyCommand : undo and redo
+  ToggleCompletionCommand --> StudyPlannerFacade : receiver
+}
+
+package "State" {
+  class FocusTimer
+  interface TimerState
+  class Idle
+  class Running
+  class Paused
+  enum Finished
+  FocusTimer --> TimerState : current state
+  TimerState <|.. Idle
+  TimerState <|.. Running
+  TimerState <|.. Paused
+  TimerState <|.. Finished
+}
+
+package "Swing Interface" {
+  class PlannerFrame
+  class Dashboard
+  class FocusPanel
+  class TaskImportDialog
+  class CourseMapPanel
+  PlannerFrame *-- Dashboard
+  PlannerFrame *-- FocusPanel
+  PlannerFrame *-- CourseMapPanel
+  PlannerFrame ..> TaskImportDialog
+}
+
+PlannerFrame --> StudyPlannerFacade
+PlannerFrame --> CommandHistory
+PlannerFrame ..> StudyEventListener : subscribes
+FocusPanel --> FocusTimer
+Dashboard ..> StudyProgress
+TaskImportDialog ..> TaskImportSource
+CourseMapPanel ..> CourseMap
+StudyPlannerFacade ..> TaskBuilder
+StudyPlannerFacade ..> TaskDraft
+StudyPlannerFacade ..> StudyProgress
+StudyPlannerFacade --> StudyEventHub
+StudyPlannerFacade ..> SchedulingStrategy
+StudyPlannerFacade ..> SummaryComponent
+StudyPlannerFacade ..> ExportService
+@enduml

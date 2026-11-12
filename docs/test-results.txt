@@ -1,0 +1,24 @@
+PASS | T01 Demo data is available on first launch | actual: as expected
+PASS | T02 New plan and task persist after restart | actual: as expected
+PASS | T03 Editing plan and task updates their values | actual: as expected
+PASS | T04 Strategy switching changes recommended order | actual: as expected
+PASS | T05 Observer publishes a notification on changes | actual: as expected
+PASS | T06 Completing task changes decorated report | actual: as expected
+PASS | T07 Recording, editing and deleting focus time | actual: as expected
+PASS | T08 Both export variants produce readable results | actual: as expected
+PASS | T09 Blank plan title is rejected | actual: as expected
+PASS | T10 Zero estimated minutes is rejected | actual: as expected
+PASS | T11 Priority above five is rejected | actual: as expected
+PASS | T12 Focus session with missing task is rejected | actual: as expected
+PASS | T13 Deleting a plan removes related tasks and sessions | actual: as expected
+PASS | T14 Timer excludes paused time and rejects an early save | actual: as expected
+PASS | T15 Daily quest and level survive restart without duplicate XP | actual: as expected
+PASS | T16 Reopening and recompleting cannot move the original completion day | actual: as expected
+PASS | T17 Edited or deleted timer records update progress | actual: as expected
+PASS | T18 Version 1 data loads without invented dates or timer history | actual: as expected
+PASS | T19 Undo and redo restore completion date, quest XP and saved state | actual: as expected
+PASS | T20 CSV adapter imports quoted tasks and exported task rows | actual: as expected
+PASS | T21 Invalid batch is atomic and malformed CSV identifies the row | actual: as expected
+PASS | T22 Course Map totals combine plan and task nodes | actual: as expected
+PASS | T23 Finished timer state is terminal and idle pause is harmless | actual: as expected
+RESULT: 23 passed, 0 failed

@@ -1,0 +1,41 @@
+@startuml
+skinparam monochrome true
+actor Student
+participant "PlannerFrame" as UI
+participant CommandHistory as History
+participant ToggleCompletionCommand as Command
+participant FocusPanel as Focus
+participant FocusTimer as Timer
+participant StudyPlannerFacade as Facade
+participant PropertiesRepository as Store
+participant StudyEventHub as Events
+participant Dashboard as Dash
+
+Student -> UI : Complete task
+UI -> History : execute(command)
+History -> Command : execute()
+Command -> Facade : toggleTask(taskId)
+Facade -> Store : save(snapshot with completion date)
+Store --> Facade : saved
+Facade -> Events : publish(task completed)
+Events -> UI : queue refresh
+
+Student -> Focus : Start, Pause, Resume
+Focus -> Timer : start() and pause()
+Focus -> Timer : ready()
+Timer --> Focus : target reached
+Student -> Focus : Finish and save
+Focus -> UI : saveTimer(timer)
+UI -> Facade : finishFocus(taskId, timer)
+Facade -> Timer : ready()
+Timer --> Facade : true
+Facade -> Store : save(snapshot with timed session)
+Store --> Facade : saved
+Facade -> Events : publish(session recorded)
+Events -> UI : queue refresh
+Facade --> UI : saved session
+UI -> Facade : progress()
+Facade --> UI : XP, mission, streak, weekly activity
+UI -> Dash : refresh(progress)
+Dash --> Student : mission complete and progress shown
+@enduml
