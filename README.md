@@ -72,5 +72,3 @@ The six core patterns remain part of the final project. The four additions exten
 - `docs/class-diagram.puml` and `docs/sequence-diagram.puml` contain UML sources. `docs/images/` contains rendered diagrams and screenshots with illustrative local data.
 - `docs/test-scenarios.csv` describes the inputs and outcomes for 23 automated tests. `docs/test-results.txt` records the latest automated run.
 - `docs/DEFENSE_GUIDE.md` and `START_HERE_RU.md` cover the walkthrough and individual defense. `CHANGELOG.md` records changes by release.
-
-Before submission, enter real team names, pattern ownership, actual contributions, and the GitHub or GitLab URL showing your development history. Each student should independently test and adapt their work, then practice explaining and modifying their own patterns. Codex assisted with this revision, documentation, and verification. Follow the course rules for disclosing AI use and independent development.
